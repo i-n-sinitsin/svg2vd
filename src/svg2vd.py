@@ -1,6 +1,4 @@
-import svg2vd_types as types
-import svg2vd_reader as RD
-import svg2vd_writer as WR
+from src import svg2vd_reader as RD, svg2vd_writer as WR
 
 
 def do_work(filename: str):

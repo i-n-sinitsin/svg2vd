@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
-import svg2vd_types as types
-import svg2vd_tools as tools
+from src import svg2vd_tools as tools, svg2vd_types as types
+
 
 class Writer:
     data: types.Data

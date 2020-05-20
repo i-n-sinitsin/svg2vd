@@ -1,4 +1,4 @@
-import svg2vd_types as types
+from src import svg2vd_types as types
 
 
 def remove_link_from_string(str):
