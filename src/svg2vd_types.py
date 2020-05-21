@@ -44,6 +44,38 @@ class StyleData:
         self.stroke_linecap = ""
         self.stroke_linejoin = ""
 
+    def read_from_string(self, input_string: str):
+        styles_list = input_string.split(";")
+        styles = {}
+        for style in styles_list:
+            params = style.split(":")
+            if len(params) > 1:
+                styles[params[0]] = params[1]
+
+        if "fill" in styles:
+            self.fill = styles["fill"]
+        if "fill-opacity" in styles:
+            self.fill_opacity = styles["fill-opacity"]
+        if "stroke" in styles:
+            self.stroke = styles["stroke"]
+        if "stroke-opacity" in styles:
+            self.stroke_opacity = styles["stroke-opacity"]
+        if "stroke-width" in styles:
+            self.stroke_width = styles["stroke-width"]
+        if "stop-color" in styles:
+            self.stop_color = styles["stop-color"]
+        if "stop-opacity" in styles:
+            self.stop_opacity = styles["stop-opacity"]
+        if "fill-rule" in styles:
+            if styles["fill-rule"].lower() == "evenodd":
+                self.fill_type = "evenOdd"
+            elif styles["fill-rule"].lower() == "nonzero":
+                self.fill_type = "nonZero"
+
+        # todo:
+        # stroke-linecap
+        # stroke-linejoin
+
 
 class LinearGradientStopData:
     style: StyleData

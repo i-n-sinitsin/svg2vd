@@ -143,7 +143,7 @@ class Reader:
                 # nothing to do
                 pass
             elif attrib_name == "style":
-                self.data.defs_data.linear_gradients[gradient_id].stops[saved_id].style = self.read_style(attrib_value)
+                self.data.defs_data.linear_gradients[gradient_id].stops[saved_id].style.read_from_string(attrib_value)
             elif attrib_name == "offset":
                 self.data.defs_data.linear_gradients[gradient_id].stops[saved_id].offset = attrib_value
             elif attrib_name == "stop-opacity":
@@ -152,41 +152,6 @@ class Reader:
                 self.data.defs_data.linear_gradients[gradient_id].stops[saved_id].style.stop_color = attrib_value
             else:
                 print(f"collect_linear_gradient_stop: attribute {attrib_name} not supported value={attrib_value}")
-
-    def read_style(self, style_str: str):
-        style_data = types.StyleData()
-        styles = {}
-        styles_list = style_str.split(";")
-        for style in styles_list:
-            params = style.split(":")
-            if len(params) > 1:
-                styles[params[0]] = params[1]
-
-        if "fill" in styles:
-            style_data.fill = styles["fill"]
-        if "fill-opacity" in styles:
-            style_data.fill_opacity = styles["fill-opacity"]
-        if "stroke" in styles:
-            style_data.stroke = styles["stroke"]
-        if "stroke-opacity" in styles:
-            style_data.stroke_opacity = styles["stroke-opacity"]
-        if "stroke-width" in styles:
-            style_data.stroke_width = styles["stroke-width"]
-        if "stop-color" in styles:
-            style_data.stop_color = styles["stop-color"]
-        if "stop-opacity" in styles:
-            style_data.stop_opacity = styles["stop-opacity"]
-        if "fill-rule" in styles:
-            if styles["fill-rule"].lower() == "evenodd":
-                style_data.fill_type = "evenOdd"
-            elif styles["fill-rule"].lower() == "nonzero":
-                style_data.fill_type = "nonZero"
-
-        # todo:
-        # stroke-linecap
-        # stroke-linejoin
-
-        return style_data
 
     def read_transform(self, transform_str: str):
         transform_data = types.TransformData()
@@ -276,7 +241,7 @@ class Reader:
             elif attrib_name == "d":
                 path.d = attrib_value
             elif attrib_name == "style":
-                path.style = self.read_style(attrib_value)
+                path.style.read_from_string(attrib_value)
             elif attrib_name == "transform":
                 path.transform = self.read_transform(attrib_value)
             elif attrib_name == "fill":
@@ -327,7 +292,7 @@ class Reader:
             elif attrib_name == "height":
                 rect.height = attrib_value
             elif attrib_name == "style":
-                rect.style = self.read_style(attrib_value)
+                rect.style.read_from_string(attrib_value)
             elif attrib_name == "fill":
                 rect.style.fill = attrib_value
             elif attrib_name == "fill-opacity":
@@ -374,7 +339,7 @@ class Reader:
             elif attrib_name == "cy":
                 ellipse.cy = attrib_value
             elif attrib_name == "style":
-                ellipse.style = self.read_style(attrib_value)
+                ellipse.style.read_from_string(attrib_value)
             elif attrib_name == "fill":
                 ellipse.style.fill = attrib_value
             elif attrib_name == "fill-opacity":
@@ -419,7 +384,7 @@ class Reader:
             elif attrib_name == "cy":
                 circle.cy = attrib_value
             elif attrib_name == "style":
-                circle.style = self.read_style(attrib_value)
+                circle.style.read_from_string(attrib_value)
             elif attrib_name == "fill":
                 circle.style.fill = attrib_value
             elif attrib_name == "fill-opacity":
@@ -466,7 +431,7 @@ class Reader:
             elif attrib_name == "y2":
                 line.y2 = attrib_value
             elif attrib_name == "style":
-                line.style = self.read_style(attrib_value)
+                line.style.read_from_string(attrib_value)
             elif attrib_name == "fill":
                 line.style.fill = attrib_value
             elif attrib_name == "fill-opacity":
@@ -507,7 +472,7 @@ class Reader:
             elif attrib_name == "points":
                 polyline.points = attrib_value.split(" ")
             elif attrib_name == "style":
-                polyline.style = self.read_style(attrib_value)
+                polyline.style.read_from_string(attrib_value)
             elif attrib_name == "fill":
                 polyline.style.fill = attrib_value
             elif attrib_name == "fill-opacity":
