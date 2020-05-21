@@ -30,6 +30,7 @@ class StyleData:
     stroke_linecap: str
     stroke_linejoin: str
     opacity: str
+    supportedAttrib: list
 
     def __init__(self):
         self.fill = ""
@@ -43,6 +44,10 @@ class StyleData:
         self.stroke_dasharray = ""
         self.stroke_linecap = ""
         self.stroke_linejoin = ""
+        self.supportedAttrib = ["style",
+                                 "fill", "fill-opacity",
+                                "stroke", "stroke-opacity", "stroke-width",
+                                "stop-color", "stop-opacity", "fill-rule"]
 
     def read_from_string(self, input_string: str):
         styles_list = input_string.split(";")
@@ -51,30 +56,37 @@ class StyleData:
             params = style.split(":")
             if len(params) > 1:
                 styles[params[0]] = params[1]
+        for attrib_name, attrib_value in styles.items():
+            self.set_value(attrib_name, attrib_value)
 
-        if "fill" in styles:
-            self.fill = styles["fill"]
-        if "fill-opacity" in styles:
-            self.fill_opacity = styles["fill-opacity"]
-        if "stroke" in styles:
-            self.stroke = styles["stroke"]
-        if "stroke-opacity" in styles:
-            self.stroke_opacity = styles["stroke-opacity"]
-        if "stroke-width" in styles:
-            self.stroke_width = styles["stroke-width"]
-        if "stop-color" in styles:
-            self.stop_color = styles["stop-color"]
-        if "stop-opacity" in styles:
-            self.stop_opacity = styles["stop-opacity"]
-        if "fill-rule" in styles:
-            if styles["fill-rule"].lower() == "evenodd":
-                self.fill_type = "evenOdd"
-            elif styles["fill-rule"].lower() == "nonzero":
-                self.fill_type = "nonZero"
-
-        # todo:
-        # stroke-linecap
-        # stroke-linejoin
+    def set_value(self, attrib_name: str, attrib_value: str):
+        if attrib_name in self.supportedAttrib:
+            if attrib_name == "style":
+                self.read_from_string(attrib_value)
+            if attrib_name == "fill":
+                self.fill = attrib_value
+            if attrib_name == "fill-opacity":
+                self.fill_opacity = attrib_value
+            if attrib_name == "stroke":
+                self.stroke = attrib_value
+            if attrib_name == "stroke-opacity":
+                self.stroke_opacity = attrib_value
+            if attrib_name == "stroke-width":
+                self.stroke_width = attrib_value
+            if attrib_name == "stop-color":
+                self.stop_color = attrib_value
+            if attrib_name == "stop-opacity":
+                self.stop_opacity = attrib_value
+            if attrib_name == "fill-rule":
+                if attrib_value.lower() == "evenodd":
+                    self.fill_type = "evenOdd"
+                elif attrib_value.lower() == "nonzero":
+                    self.fill_type = "nonZero"
+            # todo:
+            # stroke-linecap
+            # stroke-linejoin
+        else:
+            print(f"Style not support attrib -> {attrib_name}     value -> {attrib_value}")
 
 
 class LinearGradientStopData:
